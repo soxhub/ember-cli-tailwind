@@ -28,12 +28,21 @@ const validBuildTargets = Object.keys(buildDestinations);
 module.exports = {
 	name: 'ember-cli-tailwind',
 
+	tailwindOptions: null,
+
 	isDevelopingAddon() {
 		return true;
 	},
 
 	included(includer) {
 		this._super.included.apply(this, arguments);
+
+		if (includer.options.hasOwnProperty(this.name)) {
+			this.tailwindOptions = Object.assign({}, this._defaultOptions(), includer.options[this.name]);
+		}
+		else {
+			this.tailwindOptions = this._defaultOptions();
+		}
 
 		// If this is set, show a warning
 		let explicitBuildTarget = includer.options &&
@@ -91,11 +100,24 @@ module.exports = {
 
 		if (!this._shouldIncludeStyleguide()) {
 			appTree = new Funnel(appTree, {
-				exclude: ['**/instance-initializers/ember-cli-tailwind.js'],
+				exclude: [
+					'**/instance-initializers/ember-cli-tailwind.js',
+				],
 			});
 		}
 
 		return debugTree(appTree, 'tree-for-app');
+	},
+
+	_defaultOptions() {
+		return {
+			shouldBuildTailwind: true,
+			outputFile: 'tailwind.css',
+			modulesFile: 'modules.css',
+			easyImport: {
+				extensions: ['.css'],
+			},
+		};
 	},
 
 	_shouldIncludeStyleguide() {
@@ -171,6 +193,6 @@ module.exports = {
 	},
 
 	_config() {
-		return this.parent.config(process.env.EMBER_ENV)[this.name] || {};
+		return this.tailwindOptions;
 	}
 };

@@ -2,6 +2,7 @@
 # Copied from https://github.com/ef4/ember-auto-import/blob/master/scripts/link-them.sh
 set -e
 
+ln -s ../../../.. bin 2> /dev/null || true
 
 ###
 ### Scenario 1: App using Tailwind

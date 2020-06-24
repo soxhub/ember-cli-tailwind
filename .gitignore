@@ -25,4 +25,5 @@ DEBUG
 /package-lock.json
 
 # other
+/bin/
 jsconfig.json

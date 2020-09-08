@@ -121,9 +121,7 @@ module.exports = {
 	},
 
 	_shouldIncludeStyleguide() {
-		let envConfig = this.parent.config(process.env.EMBER_ENV)[this.name];
-		let shouldOverrideDefault = envConfig !== undefined && envConfig.shouldIncludeStyleguide !== undefined;
-		return shouldOverrideDefault ? envConfig.shouldIncludeStyleguide : process.env.EMBER_ENV !== 'production';
+		return process.env.EMBER_ENV !== 'production';
 	},
 
 	// Private
